@@ -35,6 +35,7 @@ namespace coreScrape.Providers
             //{
             //    additionalParam = "word";
             //}
+            //htmlDocument.InnerHtml
 
             var nodes =
                 htmlDocument
