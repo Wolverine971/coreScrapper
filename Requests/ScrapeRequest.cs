@@ -6,7 +6,7 @@ namespace coreScrape.Requests
 
     public class ScrapeRequest
     {
-         public string Website { get; set; }
+        public string Website { get; set; }
         public string SearchingFor { get; set; }
     }
 }

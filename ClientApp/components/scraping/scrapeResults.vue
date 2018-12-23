@@ -1,6 +1,7 @@
 <template>
     <v-layout column>
-        <div v-for="(result) in Results" :key="result">
+        <div v-for="(result, index) in Results" :key="index">
+            <span>{{result}}</span>
         </div>
     </v-layout>
 </template>
@@ -9,7 +10,8 @@ export default {
     name: 'ScrapeResults',
     computed:{
         Results(){
-            return this.$store.state.scrapeResults
+            console.log("got the results")
+            return this.$store.state.scrapeResults.scrappedThing
         }
     }
 }

@@ -47,6 +47,7 @@ namespace coreScrape
             }
 
             app.UseStaticFiles();
+            app.UseDefaultFiles();
 
             app.UseMvc(routes =>
             {
@@ -55,8 +56,8 @@ namespace coreScrape
                     template: "{controller=Home}/{action=Index}/{id?}");
 
                 routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
+                name: "spa-fallback",
+                defaults: new { controller = "Home", action = "Index" });
             });
         }
     }

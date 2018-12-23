@@ -9,7 +9,7 @@
     fluid
   >
     <v-flex>
-        <v-form v-model="valid">
+        <v-form>
             <v-text-field
             v-model="URL"
             label="URL"
@@ -50,6 +50,7 @@ import { mapActions, mapState } from 'vuex'
     methods:{
         
         scrape(){
+            console.log('scrapper')
             let scrapeRequest = {
                 Website: this.URL,
                 SearchingFor: this.word

@@ -1,58 +1,36 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using coreScrape.Providers;
-using coreScrape.Requests;
-using System.Web.Http;
+using coreScrape.Models;
 using System.Net;
 using System;
 
 namespace coreScrape.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
-    public class ScrapeController : Controller
+    [ApiController]
+    public class ScrapeController : ControllerBase
     {
-        private readonly IWeatherProvider weatherProvider;
-        private IGrabbyProvider _gProvider;
+        private readonly IGrabbyProvider _gProvider;
 
-        public ScrapeController(IWeatherProvider weatherProvider, IGrabbyProvider gProvider)
+        public ScrapeController(IGrabbyProvider gProvider)
         {
-            this.weatherProvider = weatherProvider;
-            this._gProvider = gProvider;
-            
-        }
-
-        [HttpGet("[action]")]
-        public IActionResult Forecasts([FromQuery(Name = "from")] int from = 0, [FromQuery(Name = "to")] int to = 4)
-        {
-            //System.Threading.Thread.Sleep(500); // Fake latency
-            var quantity = to - from;
-
-            // We should also avoid going too far in the list.
-            if (quantity <= 0)
-            {
-                return BadRequest("You cannot have the 'to' parameter higher than 'from' parameter.");
-            }
-
-            if (from < 0)
-            {
-                return BadRequest("You cannot go in the negative with the 'from' parameter");
-            }
-
-            var allForecasts = weatherProvider.GetForecasts();
-            var result = new
-            {
-                Total = allForecasts.Count,
-                Forecasts = allForecasts.Skip(from).Take(quantity).ToArray()
-            };
-
-            return Ok(result);
+            _gProvider = gProvider;
         }
         
-        [HttpPost]
+        [Route("[action]")]
         public IActionResult Site([FromBody]ScrapeRequest model)
         {
+            ScrapeRequest sr = new ScrapeRequest();
             try
             {
+                if (model.Website == null)
+                {
+                    Console.Write(model.Website);
+                
+                    return BadRequest("ScrapeRequest object is null");
+                }
                 var response = _gProvider.GetUrls(model);
                 return Ok(response);
             }

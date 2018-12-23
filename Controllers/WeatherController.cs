@@ -1,6 +1,10 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using coreScrape.Providers;
+using coreScrape.Requests;
+using System.Web.Http;
+using System.Net;
+using System;
 
 namespace coreScrape.Controllers
 {
@@ -8,10 +12,12 @@ namespace coreScrape.Controllers
     public class WeatherController : Controller
     {
         private readonly IWeatherProvider weatherProvider;
+        private readonly IGrabbyProvider _gProvider;
 
-        public WeatherController(IWeatherProvider weatherProvider)
+        public WeatherController(IWeatherProvider weatherProvider, IGrabbyProvider gProvider)
         {
             this.weatherProvider = weatherProvider;
+            _gProvider = gProvider;
         }
 
         [HttpGet("[action]")]
@@ -40,5 +46,6 @@ namespace coreScrape.Controllers
 
             return Ok(result);
         }
+        
     }
 }
