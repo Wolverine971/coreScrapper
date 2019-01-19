@@ -11,6 +11,7 @@ export default {
     computed:{
         Results(){
             console.log("got the results")
+            if(this.$store.state.scrapeResults)
             return this.$store.state.scrapeResults.scrappedThing
         }
     }

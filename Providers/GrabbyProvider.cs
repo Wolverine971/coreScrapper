@@ -7,6 +7,11 @@ using System.Net;
 using coreScrape.Models;
 using coreScrape.Providers;
 using System.Text.RegularExpressions;
+using coreScrape.Requests;
+using System.Threading;
+using Ganss.XSS;
+//using ScrapySharp.Network;
+//using System.Speech.Synthesis;
 
 
 namespace coreScrape.Providers
@@ -15,11 +20,28 @@ namespace coreScrape.Providers
     {
         public ScrapedObj GetUrls(ScrapeRequest model)
         {
+
+            // ScrapingBrowser Browser = new ScrapingBrowser();
+            // Browser.AllowAutoRedirect = true; // Browser has settings you can access in setup
+            // Browser.AllowMetaRedirect = true;
+
+            // WebPage PageResult = Browser.NavigateToPage(new Uri(model.Website));
+
+
+
+
+
             // ScrapeRequest model
             var webClient = new WebClient();
             var htmlString = webClient.DownloadString(model.Website);
+            
+            //sanitize the downloaded html String
+            var sanitizer = new HtmlSanitizer();
+            string sanitizedString = sanitizer.Sanitize(htmlString, model.Website, null);
+
+
             var htmlDocument = new HtmlDocument();
-            htmlDocument.LoadHtml(htmlString); 
+            htmlDocument.LoadHtml(sanitizedString); 
             var htmlBody = htmlDocument.DocumentNode.SelectSingleNode("//body");
 
             string rx2 = @"[^.?!]*(?<=[.?\s!])" + model.SearchingFor + @"(?=[\s.?!])[^.?!]*[.?!]";
@@ -46,7 +68,7 @@ namespace coreScrape.Providers
             //dumbHrefs
             List<string> listOfHrefs = new List<string>();
             //
-            Match m;
+            //Match m;
             string HRefPattern = "href\\s*=\\s*(?:[\"'](?<1>[^\"']*)[\"']|(?<1>\\S+))"; 
             try 
             {
@@ -60,32 +82,30 @@ namespace coreScrape.Providers
             catch(RegexMatchTimeoutException){
 
             }
+            Console.Beep();
 
-            // string pattern2 = @"[^.>?!]*(?<=[.?\s!])" + model.SearchingFor + @"(?=[\s.?<!])[^.?<!]*[.<?!]";
-            // Match match2;
-            // match2 = Regex.Match(htmlBody.InnerText, pattern2);
-            
-            // var nodes =
-            //     htmlDocument
-            //     .DocumentNode
-            //     .Descendants();
-            //     // .Where(node =>
-            //     // node.Attributes[model.SearchingFor] != null);
 
-            // var searchingFor = htmlDocument.DocumentNode
-            //                     .SelectNodes(model.SearchingFor);
-            
-            // List<string> urls = new List<string>();
-            // foreach (var node in nodes)
-            // {
-            //     urls.Add(node.InnerHtml);
-            // }
+            // SpeechSynthesizer synth = new SpeechSynthesizer();
 
-            // ScrapedObj sO = new ScrapedObj();
-            // sO.ScrappedThing = urls;
-            //sO.Encoding = encoded;
+            // // Configure the audio output. 
+            // synth.SetOutputToDefaultAudioDevice();
 
-            //something goes here ---------------
+            // // Speak a string.
+            // synth.Speak("This example demonstrates a basic use of Speech Synthesizer");
+
+            // Install-Package ScrapySharp using ScrapySharp.Network; using HtmlAgilityPack; using ScrapySharp.Extensions
+            // dotnet add package ScrapySharp --version 3.0.0
+
+            Console.Beep(659, 125); Console.Beep(659, 125); Thread.Sleep(125); Console.Beep(659, 125); Thread.Sleep(167); Console.Beep(523, 125); Console.Beep(659, 125); Thread.Sleep(125); Console.Beep(784, 125); Thread.Sleep(375); Console.Beep(392, 125); Thread.Sleep(375); Console.Beep(523, 125); Thread.Sleep(250); Console.Beep(392, 125); Thread.Sleep(250); Console.Beep(330, 125); Thread.Sleep(250); Console.Beep(440, 125); Thread.Sleep(125); Console.Beep(494, 125); Thread.Sleep(125); Console.Beep(466, 125); Thread.Sleep(42); Console.Beep(440, 125); Thread.Sleep(125); Console.Beep(392, 125); Thread.Sleep(125); Console.Beep(659, 125); 
+            Thread.Sleep(125); Console.Beep(784, 125); Thread.Sleep(125); Console.Beep(880, 125); Thread.Sleep(125); Console.Beep(698, 125); Console.Beep(784, 125); Thread.Sleep(125); Console.Beep(659, 125); 
+            Thread.Sleep(125); Console.Beep(523, 125); Thread.Sleep(125); Console.Beep(587, 125); Console.Beep(494, 125); Thread.Sleep(125); Console.Beep(523, 125); Thread.Sleep(250); Console.Beep(392, 125); Thread.Sleep(250); Console.Beep(330, 125); Thread.Sleep(250); Console.Beep(440, 125); Thread.Sleep(125); Console.Beep(494, 125); Thread.Sleep(125); Console.Beep(466, 125); Thread.Sleep(42); Console.Beep(440, 125); Thread.Sleep(125); Console.Beep(392, 125); Thread.Sleep(125); Console.Beep(659, 125); Thread.Sleep(125); Console.Beep(784, 125); Thread.Sleep(125); Console.Beep(880, 125); Thread.Sleep(125); Console.Beep(698, 125); Console.Beep(784, 125); 
+            Thread.Sleep(125); Console.Beep(659, 125); Thread.Sleep(125); Console.Beep(523, 125); Thread.Sleep(125); Console.Beep(587, 125); Console.Beep(494, 125); Thread.Sleep(375); Console.Beep(784, 125); Console.Beep(740, 125); Console.Beep(698, 125); 
+            Thread.Sleep(42); Console.Beep(622, 125); Thread.Sleep(125); Console.Beep(659, 125); Thread.Sleep(167); Console.Beep(415, 125); Console.Beep(440, 125); Console.Beep(523, 125); Thread.Sleep(125); Console.Beep(440, 125); Console.Beep(523, 125); Console.Beep(587, 125); Thread.Sleep(250); Console.Beep(784, 125); Console.Beep(740, 125); Console.Beep(698, 125); Thread.Sleep(42); Console.Beep(622, 125); Thread.Sleep(125); Console.Beep(659, 125); Thread.Sleep(167); Console.Beep(698, 125); Thread.Sleep(125); Console.Beep(698, 125); Console.Beep(698, 125); 
+            Thread.Sleep(625); Console.Beep(784, 125); Console.Beep(740, 125); Console.Beep(698, 125); Thread.Sleep(42); Console.Beep(622, 125); Thread.Sleep(125); Console.Beep(659, 125); 
+            Thread.Sleep(167); Console.Beep(415, 125); Console.Beep(440, 125); Console.Beep(523, 125); Thread.Sleep(125); Console.Beep(440, 125); Console.Beep(523, 125); Console.Beep(587, 125); Thread.Sleep(250); Console.Beep(622, 125); Thread.Sleep(250); Console.Beep(587, 125); Thread.Sleep(250); Console.Beep(523, 125); Thread.Sleep(1125); Console.Beep(784, 125); Console.Beep(740, 125); Console.Beep(698, 125); Thread.Sleep(42); Console.Beep(622, 125); Thread.Sleep(125); Console.Beep(659, 125); Thread.Sleep(167); Console.Beep(415, 125); Console.Beep(440, 125); Console.Beep(523, 125); 
+            Thread.Sleep(125); Console.Beep(440, 125); Console.Beep(523, 125); Console.Beep(587, 125); Thread.Sleep(250); Console.Beep(784, 125); Console.Beep(740, 125); Console.Beep(698, 125); Thread.Sleep(42); Console.Beep(622, 125); Thread.Sleep(125); Console.Beep(659, 125); Thread.Sleep(167); Console.Beep(698, 125); 
+            Thread.Sleep(125); Console.Beep(698, 125); Console.Beep(698, 125); Thread.Sleep(625); Console.Beep(784, 125); Console.Beep(740, 125); Console.Beep(698, 125); Thread.Sleep(42); Console.Beep(622, 125); Thread.Sleep(125); Console.Beep(659, 125); Thread.Sleep(167); Console.Beep(415, 125); Console.Beep(440, 125); Console.Beep(523, 125); Thread.Sleep(125); Console.Beep(440, 125); Console.Beep(523, 125); Console.Beep(587, 125); Thread.Sleep(250); Console.Beep(622, 125); Thread.Sleep(250); Console.Beep(587, 125); Thread.Sleep(250); Console.Beep(523, 125);
+
             return sO;
         }
     }

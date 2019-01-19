@@ -3,8 +3,11 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack.NetCore" Version="1.5.0.1" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.6.21" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.8.12" />
+    <PackageReference Include="HtmlSanitizer" Version="4.0.199" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="ScrapySharp" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
     <!-- Files not to show in IDE -->

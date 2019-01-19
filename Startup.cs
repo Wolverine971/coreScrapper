@@ -4,6 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Hangfire;
+using Hangfire.MemoryStorage;
+using HangfireCore.Mvc.Data;
+using HangfireCore.Mvc.Infrastructure;
+using HangfireCore.Mvc.Services;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Diagnostics;
+
+
+
 
 namespace coreScrape
 {
@@ -19,6 +30,9 @@ namespace coreScrape
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           services.AddDbContext<AppDbContext>(opts => opts.UseSqlite("DataSource=HangfireCore.db"));
+            services.AddHangfire( opts => opts.UseMemoryStorage());
+            services.AddHangfire(opt => opt.UseSqlServerStorage("Your Hangfire Connection string"));
             // Add framework services.
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -29,7 +43,11 @@ namespace coreScrape
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            ILoggerFactory loggerFactory, 
+            IServiceProvider serviceProvider,
+            AppDbContext ctx)
         {
             if (env.IsDevelopment())
             {
@@ -45,6 +63,17 @@ namespace coreScrape
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            ctx.Database.EnsureDeleted();
+            ctx.Database.EnsureCreated();
+            // Configure hangfire to use the new JobActivator we defined.
+            GlobalConfiguration.Configuration
+                .UseActivator(new HangfireActivator(serviceProvider));
+
+            // The rest of the hangfire config as usual.
+            app.UseHangfireServer();
+            app.UseHangfireDashboard();
+            
 
             app.UseStaticFiles();
             app.UseDefaultFiles();

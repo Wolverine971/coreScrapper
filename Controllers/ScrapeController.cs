@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using coreScrape.Providers;
 using coreScrape.Models;
+using coreScrape.Requests;
 using System.Net;
 using System;
 
